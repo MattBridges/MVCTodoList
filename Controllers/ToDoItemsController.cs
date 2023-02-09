@@ -130,17 +130,19 @@ namespace MVCTodoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserID,TaskName,Created,DueDate,IsCompleted")] ToDoItem toDoItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TaskName,Created,DueDate,IsCompleted")] ToDoItem toDoItem)
         {
             if (id != toDoItem.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("AppUserID");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //Assign this users id
+                    toDoItem.AppUserID = _userManager.GetUserId(User);
                     //Reformat Created Date
                     toDoItem.Created = DateTime.SpecifyKind(toDoItem.Created, DateTimeKind.Utc);
               
