@@ -9,40 +9,21 @@
 <p>
     <a class="btn btn-secondary"  asp-action="Index">View Incomplete Items</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TaskName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DueDate)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+<div class="row row-cols-md-4 g-2 ">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.TaskName)</h5>
+                <p class="mb-0">Created: @Html.DisplayFor(modelItem => item.Created)</p>
+                <p class="mb-0">Complete</p>
+                <div class="mt-4">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Update</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </div>
+            </div>
+        </div>
+        </div>
+    }
+</div>

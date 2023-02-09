@@ -11,42 +11,23 @@
     <a class="btn btn-secondary  align-items-end" asp-action="CompletedTodos">View Completed Items</a>
 </p>
 
+<div class="row row-cols-md-4 g-2 ">
+    @foreach (var item in Model)
+{
+    <div class="col">
+    <div class="card">
+        <div class="card-body text-center">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.TaskName)</h5>
+            <p class="mb-0">Created: @Html.DisplayFor(modelItem => item.Created)</p>
+            <p class="mb-0">Due Date: @Html.DisplayFor(modelItem => item.DueDate)</p>
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@item.Id">Update</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </div>
+        </div>
+    </div>
+    </div>
+}
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TaskName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-                  <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TaskName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DueDate)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-         }
-    </tbody>
-</table>
+
