@@ -15,6 +15,7 @@ using MVCTodoList.Models;
 
 namespace MVCTodoList.Controllers
 {
+    [Authorize]
     public class AccessoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -64,7 +65,7 @@ namespace MVCTodoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppUserID,AccessoryName")] Accessory accessory)
+        public async Task<IActionResult> Create([Bind("Id,AccessoryName")] Accessory accessory)
         {
             ModelState.Remove("AppUserID"); 
 
@@ -103,17 +104,19 @@ namespace MVCTodoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserID,FirstName,LastName")] Accessory accessory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserID,AccessoryName")] Accessory accessory)
         {
             if (id != accessory.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("AppUserID");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    accessory.AppUserID = _userManager.GetUserId(User);
+                    accessory.AccessoryName = accessory.AccessoryName;
                     _context.Update(accessory);
                     await _context.SaveChangesAsync();
                 }

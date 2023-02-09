@@ -16,6 +16,7 @@ using Microsoft.VisualBasic;
 
 namespace MVCTodoList.Controllers
 {
+    [Authorize]
     public class ToDoItemsController : Controller
     {
         private readonly ApplicationDbContext _context;
