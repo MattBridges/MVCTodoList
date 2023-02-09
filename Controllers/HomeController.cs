@@ -26,6 +26,11 @@ namespace MVCTodoList.Controllers
             return View();
         }
 
+        public IActionResult CompletedTodos()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {
