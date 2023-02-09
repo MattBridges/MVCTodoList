@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MVCTodoList.Data;
 using MVCTodoList.Models;
 using System.Diagnostics;
 
@@ -7,16 +10,22 @@ namespace MVCTodoList.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<AppUser> _userManager;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _logger = logger;
+            _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+
 
         public IActionResult Privacy()
         {

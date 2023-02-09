@@ -28,19 +28,29 @@ namespace MVCTodoList.Controllers
         }
 
         // GET: ToDoItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? accessoryId)
         {
             //Get the current users ID
             string userId = _userManager.GetUserId(User)!;
 
+            //Get Todo users items from the database 
+            List<ToDoItem> todos = await _context.ToDoItem
+                                                        .Where(c => c.AppUserID == userId && c.IsCompleted == false)
+                                                        .ToListAsync();
+            //Give the view the todo list.
+            return View(todos);
+        }
 
-            //Get Todo from AppUser
-            List<ToDoItem> todos = new List<ToDoItem>();
+        public async Task<IActionResult> CompletedTodos()
+        {
+            //Get the current users ID
+            string userId = _userManager.GetUserId(User)!;
 
-           todos = await _context.ToDoItem.Where(c=>c.AppUserID== userId).ToListAsync();
-
-
-            //var applicationDbContext = _context.ToDoItem.Include(t => t.AppUser);
+            //Get Todo users items from the database 
+            List<ToDoItem> todos = await _context.ToDoItem
+                                                        .Where(c => c.AppUserID == userId && c.IsCompleted == true)
+                                                        .ToListAsync();
+            //Give the view the todo list.
             return View(todos);
         }
 
@@ -64,8 +74,15 @@ namespace MVCTodoList.Controllers
         }
 
         // GET: ToDoItems/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            //Get the current users ID
+            string userId = _userManager.GetUserId(User)!;
+            //Get the users accessory list
+            IEnumerable<Accessory> accessories = await _context.Accessory.Where(c => c.AppUserID == userId).ToListAsync();
+
+            //Give the users accessories to the view
+            ViewData["AccessoryList"] = new MultiSelectList(accessories, "Id", "AccessoryName");
             return View();
         }
 
@@ -126,10 +143,8 @@ namespace MVCTodoList.Controllers
                 {
                     //Reformat Created Date
                     toDoItem.Created = DateTime.SpecifyKind(toDoItem.Created, DateTimeKind.Utc);
-                    //Check if image was updated
               
-                    //Reformat DueDate
-                
+                    //Reformat DueDate                
                     toDoItem.DueDate = DateTime.SpecifyKind(toDoItem.DueDate, DateTimeKind.Utc);
                 
                     _context.Update(toDoItem);
